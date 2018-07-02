@@ -153,11 +153,49 @@ undefined、null、-0、+0、NaN、‘’(空字符串) => false，其他都转�
 
 四则运算、判断语句、Native调用
 
+1. -、 *、/ 和 % 等算术运算符都会把操作数转换成数字的，但是 + 不一样，有些情况下，它是算术加号，有些情况下，是字符串连接符号，具体的要看它的操作数
+2. 字符串和数字相加结果是字符串
+3. 一个对象同时存在valueOf方法和toString方法，那么，valueOf方法总是会被优先调用
+
 ### 常见题目
 
-- [] + [] = ""
-- [] + {} = "[object Object]"
-- {} + [] = 0
-- {} + {} = "[object Object][object Object]"
+在加法运算中：{}可被不同浏览器解析成"[object Object]"字符串和代码块；[]被解析成空数组
+
+- [] + [] = ""  
+    ```
+    // 转String
+    [].toString() = "";    // OK，加号可以处理String
+    [] + [] = "" + "" = "";
+    
+    // 等同于
+    [] + [] = String([]) + String([]) = "" + "" = "";
+    ```
+- [] + {} = "[object Object]"  
+    ```
+    // 转String
+    [].toString() = "";  // OK
+    ({}).toString() = "[object Object]";    // OK
+    [] + {} = "" + "[object Object]" = "[object Object]";
+    
+    // 等同于
+    [] + {} = String([]) + String({}) = "" + "[object Object]" = "[object Object]";
+    ```
+- {} + [] = 0  
+    ```
+    // 此处在google浏览器中此处{}被解析成代码块，不执行，[]被解析成Number([])=0
+    {} + [] = +[] = +Number([]) = +0 = 0;
+    ```
+- {} + {} = "[object Object][object Object]"  
+    ```
+    //google将两个{}解析成[object Object]
+    {} + {} = "[object Object]"  + "[object Object]"  = "[object Object][object Object]";
+    
+    // fireFox将{}解析成代码块
+    {} + {} = +{} = NaN;
+    ```
+
 - true + true = 2
 - 1 + {a:1} = "1[object Object]"
+    ```
+    1 + {a:1} = 1 + String({a:1}) = 1 + "[object Object]"  = "1[object Object]"；
+    ```
