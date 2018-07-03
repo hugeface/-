@@ -199,3 +199,11 @@ undefined、null、-0、+0、NaN、‘’(空字符串) => false，其他都转�
     ```
     1 + {a:1} = 1 + String({a:1}) = 1 + "[object Object]"  = "1[object Object]"；
     ```
+
+# HTTP协议
+
+### HTTP协议的主要特点
+
+简单快速、灵活、无连接、无状态
+
+### HTTP报文的组成部分
